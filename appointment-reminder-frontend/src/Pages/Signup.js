@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
+import './Signup.css'; 
 
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'patient', // default role
+    role: 'patient', 
   });
-  const navigate = useNavigate(); // React Router's hook for navigation
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -21,9 +22,9 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4001/user/register', formData); // Assuming /user/register is the signup route
+      await axios.post('http://localhost:4001/user/register', formData);
       alert('Signup successful');
-      navigate('/login'); // Redirect to login after successful signup
+      navigate('/login'); 
     } catch (error) {
       console.error(error);
       alert('Signup failed');
@@ -31,39 +32,57 @@ function Signup() {
   };
 
   return (
-    <div>
+    <div className="signup-container">
       <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <select name="role" value={formData.role} onChange={handleInputChange}>
-          <option value="patient">Patient</option>
-          <option value="doctor">Doctor</option>
-        </select>
-        <button type="submit">Signup</button>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="input-group">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Enter your name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="role">Role</label>
+          <select name="role" id="role" value={formData.role} onChange={handleInputChange}>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        <button type="submit" className="signup-btn">Signup</button>
       </form>
+      <div className="login-link">
+        <p>Already have an account? <Link to="/login">Login</Link></p>
+      </div>
     </div>
   );
 }

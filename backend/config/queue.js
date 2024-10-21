@@ -1,5 +1,5 @@
-// queue.js
-import Bull from 'bull'; // Ensure this import is correct
+
+import Bull from 'bull'; 
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,8 +8,8 @@ const notificationQueue = new Bull('notifications', {
   redis: {
     host: '127.0.0.1',
     port: 6379,
-    password: process.env.REDIS_PASSWORD || '', // Ensure this is correct
+    password: process.env.REDIS_PASSWORD || '', 
   },
 });
 
-export default notificationQueue; // Ensure this is exporting the instance
+export default notificationQueue; 

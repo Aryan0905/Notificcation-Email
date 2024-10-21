@@ -6,7 +6,7 @@ dotenv.config();
 
 console.log("I am in notificationJob.js");
 
-// Process jobs from the notification queue
+
 notificationQueue.process('sendEmailNotification', async (job) => {
   console.log(`Processing job with ID: ${job.id}`); 
 
@@ -32,7 +32,7 @@ notificationQueue.process('sendEmailNotification', async (job) => {
   }
 });
 
-// Optional: Handle job completion and failure events
+
 notificationQueue.on('completed', (job) => {
   console.log(`Job with ID ${job.id} has been completed!`); 
 });
