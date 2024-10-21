@@ -48,7 +48,7 @@ EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_password
 
 
-For starting surver 
+For starting server 
 Backend:- cd backend -> npm run dev
 
 Frontend:- cd appointment-reminder-frontend -> npm start
