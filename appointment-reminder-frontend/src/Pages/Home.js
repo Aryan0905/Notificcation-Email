@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [formData, setFormData] = useState({
@@ -7,21 +8,20 @@ function Home() {
     time: ''
   });
 
+  const navigate = useNavigate();
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  // const token=localStorage.getItem(token);
-  // console.log("this is frontend token jbdsfj : ",token);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // No need to pass the token explicitly, just send the form data
-      // const token=localStorage.getItem(token);
-      // console.log("this is frontend token jbdsfj : ",token);
+      
       await axios.post('http://localhost:4001/api/book', formData, {
         withCredentials: true  // Include cookies in the request
       });
@@ -29,6 +29,24 @@ function Home() {
     } catch (error) {
       console.error(error);
       alert('Booking failed');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Make a GET request to the backend logout API
+      await axios.get('http://localhost:4001/user/logout', {
+        withCredentials: true, // Include cookies in the request
+      });
+
+      // Remove the token cookie by setting its expiration to a past date
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+      // Redirect the user to the login page after logging out
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('Failed to log out. Please try again.');
     }
   };
 
@@ -52,8 +70,11 @@ function Home() {
         />
         <button type="submit">Book Appointment</button>
       </form>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
+
+
 
 export default Home;

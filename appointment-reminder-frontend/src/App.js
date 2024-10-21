@@ -4,8 +4,16 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 
 // Authentication check
+const getTokenFromCookies = () => {
+  const token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('token='))
+    ?.split('=')[1]; // Extract the value of the 'token' cookie
+  return token;
+};
+
 const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
+  const token = getTokenFromCookies();
   return token ? children : <Navigate to="/login" />;
 };
 

@@ -20,16 +20,14 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:4001/user/login', formData);  // Send email, password, and role
+      const res = await axios.post('http://localhost:4001/user/login', formData); 
       
-      console.log("Here is res",res);
-      // Assuming the backend returns the JWT token in "res.data.token"
+      console.log("Here is res", res);
+      
       if (res.data.token) {
-        document.cookie = `token=${res.data.token}; path=/; SameSite=Lax`; // Store token as a cookie
-        console.log("Navigating to home...");
-        navigate('/', { replace: true });
-// Redirect to the home page after login
-        console.log("prajwal ki mkb");
+        document.cookie = `token=${res.data.token}; path=/; SameSite=Lax`; 
+      
+        navigate('/'); 
       } else {
         alert('Login failed, please check your credentials');
       }
