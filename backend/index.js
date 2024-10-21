@@ -4,10 +4,20 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoute from "./routes/user.route.js";
 import appointmentRoute from "./routes/appointment.route.js"
+import cors from "cors";
+import './jobs/notificationJob.js';  
+
 
 
 dotenv.config({});
 const app=express();
+
+
+app.use(cors({
+  origin: 'http://localhost:3000',  
+  credentials: true,                
+}));
+
 
 //middleware
 app.use(express.json());

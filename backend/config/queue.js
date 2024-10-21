@@ -1,15 +1,15 @@
-import { Queue } from 'bullmq';
+// queue.js
+import Bull from 'bull'; // Ensure this import is correct
 import dotenv from 'dotenv';
+
 dotenv.config();
 
+const notificationQueue = new Bull('notifications', {
+  redis: {
+    host: '127.0.0.1',
+    port: 6379,
+    password: process.env.REDIS_PASSWORD || '', // Ensure this is correct
+  },
+});
 
-// console.log(process.env.REDIS_HOST);
-const connection = {
-  host: process.env.REDIS_HOST,         // Redis host from the .env file
-  port: parseInt(process.env.REDIS_PORT,10),  // Redis port from the .env file, converted to a number
-  password: process.env.REDIS_PASSWORD,  // Redis password from the .env file
-};
-console.log("reddis connected");
-const notificationQueue = new Queue('notifications', { connection });
-
-export default notificationQueue;
+export default notificationQueue; // Ensure this is exporting the instance

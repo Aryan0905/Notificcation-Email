@@ -3,24 +3,23 @@ import {Appointment} from '../models/appointment.model.js';
 import { User } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
-console.log(" I am in appointm,ent.controllewr.js");
+console.log(" I am in appointment.controllewr.js");
 
 export const bookAppointment=async(req, res)=> {
   const { date, time } = req.body;
   
   try {
-    // Combine date and time into one Date object
-
+   
     const token = req.cookies.token;
+    
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
     }
     
-    
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const patientId = decodedToken.userId; 
 
-
+   console.log("patientid is : " ,patientId);
     const appointmentDateTime = new Date(`${date}T${time}`);
     const patient=await User.findById(patientId);
     if (!patient) {
@@ -36,11 +35,22 @@ export const bookAppointment=async(req, res)=> {
     console.log(newAppointment);
     await newAppointment.save();
     
+   
+    try {
+      const job = await notificationQueue.add(
+        'sendEmailNotification',
+        { email: patientEmail, appointmentDateTime },
+        { delay: appointmentDateTime.getTime() - Date.now() - 2 * 60 * 60 * 1000}
+      );
+      console.log('Job added to queue:', job.id);
+    } catch (error) {
+      console.error('Error adding job to queue:', error);
+    }
+    
 
-   notificationQueue.add('sendEmailNotification', 
-      { email: patientEmail, appointmentDateTime }, 
-      { delay: appointmentDateTime.getTime() - Date.now() - 2 * 60 * 60 * 1000 } // 2 hours before
-    );
+
+  
+    
 
     
     res.status(201).json({ message: `Appointment booked for ${appointmentDateTime}` });

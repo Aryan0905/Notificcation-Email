@@ -9,4 +9,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+console.log('Sending email using transporter:', transporter);
+
+
 export default transporter;
